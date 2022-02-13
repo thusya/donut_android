@@ -5,13 +5,12 @@ import androidx.navigation.NavController
 import com.thusee.donutscore.R
 import com.thusee.donutscore.views.scoredetails.ScoreDetailsFragment
 
-class ScoreClickListener(private val navController: NavController, private val viewModel: ScoreViewModel): View.OnClickListener {
+class ScoreClickListener(private val navController: NavController, private val rootView: ScoreView): View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id){
 
             R.id.scoreView -> {
-                viewModel.getScoreDate()
-                    ?.let { ScoreDetailsFragment.startFragment(navController, it) }
+                ScoreDetailsFragment.startFragment(navController, rootView.getScoreDate())
             }
         }
     }

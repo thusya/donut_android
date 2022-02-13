@@ -16,6 +16,8 @@ class ScoreViewImpl: ScoreView {
     private var _binding: FragmentScoreBinding? = null
     private val binding get() = _binding!!
 
+    private var dataMapper = ScoreDataMapper()
+
     override fun inflate(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,13 +31,15 @@ class ScoreViewImpl: ScoreView {
         when (viewState) {
             is ScoreView.UiState.ShowProgressBar -> binding.rowLoadingAnim.visibility = View.VISIBLE
             is ScoreView.UiState.HideProgressBar -> binding.rowLoadingAnim.visibility = View.GONE
-            else -> {}
         }
     }
 
     override fun changeState(state: ScoreView.State) {
         when (state) {
-            is ScoreView.State.DisplayData -> updateData(state.data)
+            is ScoreView.State.DisplayData -> {
+                updateData(state.data)
+                dataMapper = state.data!!
+            }
             is ScoreView.State.ErrorHandle -> Toast.makeText(
                 binding.root.context,
                 binding.root.context.handleError(state.e),
@@ -63,6 +67,10 @@ class ScoreViewImpl: ScoreView {
 
     override fun setCallBack(listener: ScoreClickListener) {
         binding.scoreView.setOnClickListener(listener)
+    }
+
+    override fun getScoreDate(): ScoreDataMapper {
+        return dataMapper
     }
 
 

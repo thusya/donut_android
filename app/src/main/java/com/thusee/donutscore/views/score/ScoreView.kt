@@ -14,6 +14,7 @@ interface ScoreView {
     fun dispose()
     fun updateData(data: ScoreDataMapper?)
     fun setCallBack(listener: ScoreClickListener)
+    fun getScoreDate(): ScoreDataMapper
 
     sealed class State{
         data class DisplayData(val data: ScoreDataMapper?): State()

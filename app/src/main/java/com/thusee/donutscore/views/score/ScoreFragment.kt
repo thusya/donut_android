@@ -34,7 +34,7 @@ class ScoreFragment: BaseFragment() {
     }
 
     private fun setupListener() {
-        rootView.setCallBack(ScoreClickListener(findNavController(), viewModel))
+        rootView.setCallBack(ScoreClickListener(findNavController(), rootView))
     }
 
     override fun onDestroy() {
