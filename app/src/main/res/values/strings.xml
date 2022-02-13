@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">DonutScore</string>
+    <string name="your_credit_score">Your credit score is</string>
+    <string name="out_of">out of</string>
+
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="failed_error">Something went wrong. Please try again later.</string>
+    <string name="network_not_available">Please check your internet connection and try again</string>
+    <string name="unauthorized_ex">Unauthorized exception, Please contact service providers</string>
+    <string name="score_band">Score Band:</string>
+    <string name="client_ref">"Client Ref: "</string>
+</resources>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_margin_top"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/scoreBand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/scoreBand"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/clientRef"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/clientRef"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/currentShortTermDebt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/currentShortTermDebt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/currentShortTermNonPromotionalDebt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/currentShortTermNonPromotionalDebt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/currentShortTermCreditLimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/currentShortTermCreditLimit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/currentShortTermCreditUtilisation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/currentShortTermCreditUtilisation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/changeInShortTermDebt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/changeInShortTermDebt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/currentLongTermDebt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginTop="@dimen/details_textview_margin_top"
+        app:layout_constraintTop_toBottomOf="@id/currentLongTermDebt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/details_margin_start"
+        android:layout_marginEnd="@dimen/details_margin_start"
+        android:textSize="@dimen/details_text_size"
+        android:id="@+id/currentLongTermNonPromotionalDebt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
