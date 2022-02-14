@@ -7,6 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.thusee.donutscore.usecase.ScoreRemoteRepo
 import com.thusee.donutscore.views.score.events.ScoreLoadState
 import com.thusee.donutscore.views.score.events.ScoreUiViewState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -24,11 +28,19 @@ class ScoreViewModel: ViewModel(), KoinComponent {
         fetchScoreData()
     }
 
-    private fun fetchScoreData() {
-        viewModelScope.launch {
-            scoreRemoteRepo.fetchRemoteData(_uiViewState, _scoreLiveData)
+    fun fetchScoreData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            scoreRemoteRepo.fetchRemoteData().onStart {
+                _uiViewState.postValue(ScoreUiViewState.ShowProgressBar)
+            }.catch { ex ->
+                _scoreLiveData.postValue(ScoreLoadState.ErrorHandle(ex))
+                _uiViewState.postValue(ScoreUiViewState.HideProgressBar)
+            }.collect { response ->
+                _uiViewState.postValue(ScoreUiViewState.HideProgressBar)
+
+                _scoreLiveData.postValue(ScoreLoadState.DisplayData(response))
+            }
+
         }
-
     }
-
 }
