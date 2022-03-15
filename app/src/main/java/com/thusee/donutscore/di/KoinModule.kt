@@ -14,7 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 val appModule = module {
 
-    viewModel { ScoreViewModel() }
+    viewModel { ScoreViewModel(get()) }
 
     single<ScoreView> { ScoreViewImpl() }
 

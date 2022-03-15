@@ -15,21 +15,19 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class ScoreViewModel: ViewModel(), KoinComponent {
+class ScoreViewModel(private val scoreRemoteRepo: ScoreRemoteRepo): ViewModel(), KoinComponent {
     private val _scoreLiveData = MutableLiveData<ScoreLoadState>()
     val scoreLiveData: LiveData<ScoreLoadState> get() = _scoreLiveData
 
     private val _uiViewState = MutableLiveData<ScoreUiViewState>()
     val scoreUiViewState: LiveData<ScoreUiViewState> get() = _uiViewState
 
-    private val scoreRemoteRepo: ScoreRemoteRepo by inject()
-
     init {
         fetchScoreData()
     }
 
     fun fetchScoreData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             scoreRemoteRepo.fetchRemoteData().onStart {
                 _uiViewState.postValue(ScoreUiViewState.ShowProgressBar)
             }.catch { ex ->

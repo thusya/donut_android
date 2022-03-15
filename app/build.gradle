@@ -102,9 +102,4 @@ dependencies {
 
     androidTestImplementation 'io.mockk:mockk-android:1.12.2'
 
-
-}
-
-kapt {
-    correctErrorTypes true
 }

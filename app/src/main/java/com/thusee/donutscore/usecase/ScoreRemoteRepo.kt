@@ -12,14 +12,14 @@ import org.koin.core.component.KoinComponent
 
 class ScoreRemoteRepo(private val apiService: ApiService): KoinComponent {
 
-    suspend fun fetchRemoteData(): Flow<ScoreDataMapper?> {
+    fun fetchRemoteData(): Flow<ScoreDataMapper?> {
         return flow {
             emit(apiService.fetchDonutScore())
-        }.flowOn(Dispatchers.IO).map {
+        }.map {
             it.creditReportInfo?.let { response ->
                 generateScoreData(response)
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     private fun generateScoreData(creditInfo: CreditReportInfo): ScoreDataMapper {

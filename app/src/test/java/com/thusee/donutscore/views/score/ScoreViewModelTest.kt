@@ -8,24 +8,14 @@ import com.thusee.donutscore.usecase.ScoreRemoteRepo
 import com.thusee.donutscore.usecase.model.ScoreDataMapper
 import com.thusee.donutscore.views.score.events.ScoreLoadState
 import com.thusee.donutscore.views.score.events.ScoreUiViewState
-import io.mockk.CapturingSlot
-import io.mockk.clearAllMocks
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import io.mockk.unmockkAll
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.AfterEach
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.api.extension.ExtendWith
 import org.koin.dsl.module
@@ -42,8 +32,6 @@ internal class ScoreViewModelTest {
 
     val mockFlow: Flow<ScoreDataMapper> = mockk(relaxed = true)
 
-    val scoreDataMapper = ScoreDataMapper(scoreBand = 600, currentScore = 200)
-
     lateinit var instance: ScoreViewModel
 
     @BeforeAll
@@ -58,12 +46,7 @@ internal class ScoreViewModelTest {
 
         coEvery { mockRepo.fetchRemoteData() } returns mockFlow
 
-        // coEvery { mockFlow.onStart(any()) } returns mockFlow
-//        coEvery { mockFlow.catch(any()) } returns flow{
-//            emit(scoreDataMapper)
-//        }
-
-        instance = ScoreViewModel()
+        instance = ScoreViewModel(mockRepo)
         TestUtils.setProperty(instance, "_scoreLiveData", mockScoreLiveData)
         TestUtils.setProperty(instance, "_uiViewState", mockUiViewState)
 
@@ -102,51 +85,52 @@ internal class ScoreViewModelTest {
 
     }
 
-//    @DisplayName("collect")
-//    @Nested
-//    inner class Collect {
-//        @DisplayName("then get data")
-//        @Test
-//        fun thenGetData() {
-//            val mockUiViewState: MutableLiveData<ScoreUiViewState> = mockk(relaxed = true)
-//            val mockScoreLiveData: MutableLiveData<ScoreLoadState> = mockk(relaxed = true)
-//
-//            val slotData = CapturingSlot<ScoreLoadState.DisplayData>()
-//            val slotProgress = CapturingSlot<ScoreUiViewState.HideProgressBar>()
-//
-//            runBlocking {
-//                instance.fetchScoreData()
-//
-//                coVerify { mockScoreLiveData.postValue(capture(slotData)) }
-//                coVerify { mockUiViewState.postValue(capture(slotProgress)) }
-//
-//                assertEquals(ScoreLoadState.DisplayData::class, slotData.captured::class)
-//                assertEquals(ScoreUiViewState.HideProgressBar::class, slotProgress.captured::class)
-//            }
-//
-//        }
-//    }
-//
-//    @DisplayName("throws error")
-//    @Nested
-//    inner class ThrowsError {
-//        @DisplayName("then show error state")
-//        @Test
-//        fun thenShowErrorState() {
-//            val mockUiViewState: MutableLiveData<ScoreUiViewState> = mockk(relaxed = true)
-//            val mockException: Exception = mockk(relaxed = true)
-//            val mockScoreLiveData: MutableLiveData<ScoreLoadState> = mockk(relaxed = true)
-//
-//            val slotData = CapturingSlot<ScoreLoadState.ErrorHandle>()
-//
-//            coEvery { mockRepo.fetchRemoteData() } throws mockException
-//
-//            runBlocking { instance.fetchScoreData() }
-//
-//            verify { mockScoreLiveData.value = capture(slotData) }
-//
-//            assertEquals(ScoreLoadState.ErrorHandle::class, slotData.captured::class)
-//        }
-//    }
+    @DisplayName("collect")
+    @Nested
+    inner class Collect {
+        @DisplayName("then get data")
+        @Test
+        fun thenGetData() {
+            val slotData = CapturingSlot<ScoreLoadState.DisplayData>()
+            val mockScoreDataMapper: ScoreDataMapper = mockk(relaxed = true)
+
+            coEvery { mockRepo.fetchRemoteData() } returns flowOf(mockScoreDataMapper)
+
+            runBlockingTest {
+                instance.fetchScoreData()
+
+                coVerify { mockUiViewState.postValue(any<ScoreUiViewState.HideProgressBar>()) }
+                coVerify { mockScoreLiveData.postValue(capture(slotData)) }
+
+                assertEquals(ScoreLoadState.DisplayData::class, slotData.captured::class)
+                assertEquals(mockScoreDataMapper, slotData.captured.data)
+            }
+
+        }
+    }
+
+    @DisplayName("throws error")
+    @Nested
+    inner class ThrowsError {
+        @DisplayName("then show error state")
+        @Test
+        fun thenShowErrorState() {
+            val slotData = CapturingSlot<ScoreLoadState.ErrorHandle>()
+            val mockThrowable: Throwable = mockk(relaxed = true)
+
+            coEvery { mockRepo.fetchRemoteData() } returns flow {
+                throw mockThrowable
+            }
+
+            runBlockingTest {
+                instance.fetchScoreData()
+
+                coVerify { mockScoreLiveData.postValue(capture(slotData)) }
+                assertEquals(mockThrowable, slotData.captured.e)
+
+                coVerify { mockUiViewState.postValue(any<ScoreUiViewState.HideProgressBar>()) }
+            }
+        }
+    }
 
 }
